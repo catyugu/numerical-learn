@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "*.cjson": "jsonc",
+        "*.wxss": "css",
+        "*.wxs": "javascript",
+        "*.latex": "latex",
+        "nginx-learn": "NGINX",
+        "nrutils.h": "c"
+    }
+}
