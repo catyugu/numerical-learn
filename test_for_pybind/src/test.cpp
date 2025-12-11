@@ -21,9 +21,16 @@ PYBIND11_MODULE(pybind_test, m) {
     m.attr("what") = world;
 
     // If you like OOP!
-    py::class_<Pet>(m, "Pet")
+    py::class_<Pet>(m, "Pet", py::dynamic_attr()) 
+    // (Only with dynamic_attr will it be possible to add new attributes in python code)
         .def(py::init<const std::string &>())
+        .def_readwrite("name", &Pet::name) // To allow direct access to the attribute
         .def("setName", &Pet::setName)
-        .def("getName", &Pet::getName);
+        .def("getName", &Pet::getName)
+        .def("__repr__",
+        [](const Pet &a) {
+            return "<example.Pet named '" + a.name + "'>";
+        }   // Only with this will the print(pet) display some info
+    );
 }
 
