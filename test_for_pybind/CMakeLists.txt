@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(hpc_sim)
+project(cxx_simlib)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -11,13 +11,19 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(pybind11)
 
 # Now you can use it normally
-pybind11_add_module(hpc_sim 
+pybind11_add_module(cxx_simlib 
     src/fvm_thermal.cpp   
+)
+
+pybind11_add_module(pybind_test
+    src/test.cpp
 )
 
 # Optimization flags (Critical for HPC)
 if(MSVC)
-    target_compile_options(hpc_sim PRIVATE /O2)
+    target_compile_options(cxx_simlib PRIVATE /O2)
+    target_compile_options(pybind_test PRIVATE /O2)
 else()
-    target_compile_options(hpc_sim PRIVATE -O3 -march=native -ffast-math -flto)
+    target_compile_options(cxx_simlib PRIVATE -O3 -march=native -ffast-math -flto)
+    target_compile_options(pybind_test PRIVATE -O3 -march=native -ffast-math -flto)
 endif()

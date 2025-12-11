@@ -222,7 +222,7 @@ public:
     }
 };
 
-PYBIND11_MODULE(hpc_sim, m) {
+PYBIND11_MODULE(cxx_simlib, m) {
     m.attr("BC_DIRICHLET") = (int)BC_DIRICHLET;
     m.attr("BC_NEUMANN") = (int)BC_NEUMANN;
     m.attr("BC_ROBIN") = (int)BC_ROBIN;

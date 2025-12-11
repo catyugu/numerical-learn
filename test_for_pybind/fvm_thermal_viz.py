@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Ensure the build directory is in path (modify if needed)
-import build.hpc_sim as cxx_simlib
+import build.cxx_simlib as cxx_simlib
 
 # --- Simulation Parameters ---
 NX, NY = 100, 100    # Grid size
