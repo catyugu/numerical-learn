@@ -10,7 +10,7 @@ import build.hpc_sim as cxx_simlib
 # --- Simulation Parameters ---
 NX, NY = 100, 100    # Grid size
 H = 0.01             # Spacing (meters)
-ALPHA = 0.1          # Thermal diffusivity
+ALPHA = 0.2          # Thermal diffusivity
 DT_LIMIT = (H*H) / (4.0 * ALPHA)  # Stability limit for explicit scheme
 DT = DT_LIMIT * 0.8  # Safe time step
 
@@ -25,14 +25,12 @@ solver.set_uniform(25.0) # Initial Ambient Temp 25C
 solver.set_bc("left", cxx_simlib.BC_DIRICHLET, 60.0)
 
 # 2. RIGHT: Robin (Convective Cooling)
-# "h_conv" here represents h/k. Higher value = stronger convection.
 solver.set_bc("right", cxx_simlib.BC_ROBIN, 0.0, h_conv=50.0, t_amb=20.0)
 
 # 3. TOP: Neumann (Insulated / Zero Flux)
 solver.set_bc("top", cxx_simlib.BC_NEUMANN, 0.0) 
 
 # 4. BOTTOM: Neumann (Heat Flux In)
-# Value represents temperature gradient. Positive adds heat.
 solver.set_bc("bottom", cxx_simlib.BC_NEUMANN, 50.0) 
 
 # --- Source Term Utility ---
@@ -57,14 +55,14 @@ fig, ax = plt.subplots(figsize=(9, 8))
 
 data_view = solver.get_view()
 img = ax.imshow(data_view, cmap='magma', origin='lower', 
-                vmin=20.0, vmax=120.0, extent=[0, NX*H, 0, NY*H])
+                vmin=20.0, vmax=100.0, extent=[0, NX*H, 0, NY*H])
 
 plt.colorbar(img, label="Temperature (C)")
 ax.set_xlabel("X (meters)")
 ax.set_ylabel("Y (meters)")
 
 # --- Text Annotations for BCs ---
-ax.text(0.02, 0.5, "DIRICHLET\n(100 C)", transform=ax.transAxes, color='white', 
+ax.text(0.02, 0.5, "DIRICHLET\n(60 C)", transform=ax.transAxes, color='white', 
         ha='left', va='center', fontsize=8, fontweight='bold', bbox=dict(facecolor='black', alpha=0.5))
 ax.text(0.98, 0.5, "ROBIN\n(Conv -> 20C)", transform=ax.transAxes, color='white', 
         ha='right', va='center', fontsize=8, fontweight='bold', bbox=dict(facecolor='black', alpha=0.5))
@@ -81,6 +79,7 @@ frame_count = 0
 
 try:
     start_time = time.time()
+
     while plt.fignum_exists(fig.number):
         
         # 1. Update Physics
@@ -92,7 +91,7 @@ try:
 
             cx = (NX*H)/2
             cy = (NY*H)/2   
-            power_t = 300.0 * np.exp(-((sim_time - 1.0)**2) / 2.0)  # Peak at t=1.0s
+            power_t = 200.0 * np.exp(-((sim_time - 0.5)**2) / 2.0)  # Peak at t=0.5s
             
             # Generate Gaussian field (Power=500 K/s peak)
             source_field = get_gaussian_source(cx, cy, power=power_t, width=0.2)
