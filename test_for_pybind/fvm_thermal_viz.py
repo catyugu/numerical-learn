@@ -10,7 +10,7 @@ import build.hpc_sim as cxx_simlib
 # --- Simulation Parameters ---
 NX, NY = 100, 100    # Grid size
 H = 0.01             # Spacing (meters)
-ALPHA = 0.2          # Thermal diffusivity
+ALPHA = 0.02          # Thermal diffusivity
 DT_LIMIT = (H*H) / (4.0 * ALPHA)  # Stability limit for explicit scheme
 DT = DT_LIMIT * 0.8  # Safe time step
 

@@ -13,11 +13,11 @@ FetchContent_MakeAvailable(pybind11)
 # Now you can use it normally
 pybind11_add_module(hpc_sim 
     src/fvm_thermal.cpp   
-    )
+)
 
 # Optimization flags (Critical for HPC)
 if(MSVC)
     target_compile_options(hpc_sim PRIVATE /O2)
 else()
-    target_compile_options(hpc_sim PRIVATE PRIVATE -O3 -march=native -ffast-math)
+    target_compile_options(hpc_sim PRIVATE -O3 -march=native -ffast-math -flto)
 endif()
